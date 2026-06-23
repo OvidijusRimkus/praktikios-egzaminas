@@ -9,8 +9,8 @@ const {
 /**
  * Gauti visus studentus
  */
-const getStudents = async () => {
-  return await getAllStudents();
+const getStudents = async (filters) => {
+  return await getAllStudents(filters);
 };
 
 /**

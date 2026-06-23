@@ -3,12 +3,46 @@ const pool = require("../db/db");
 /**
  * Gauti visus studentus
  */
-const getAllStudents = async () => {
-  const result = await pool.query(`
+/**
+ * Gauti studentus su filtrais
+ */
+const getAllStudents = async (filters) => {
+  let query = `
     SELECT *
     FROM students
-    ORDER BY id
-  `);
+    WHERE 1=1
+  `;
+
+  const values = [];
+  let index = 1;
+
+  if (filters.id) {
+    query += ` AND id = $${index}`;
+    values.push(filters.id);
+    index++;
+  }
+
+  if (filters.course) {
+    query += ` AND course = $${index}`;
+    values.push(filters.course);
+    index++;
+  }
+
+  if (filters.firstName) {
+    query += ` AND first_name ILIKE $${index}`;
+    values.push(`%${filters.firstName}%`);
+    index++;
+  }
+
+  if (filters.lastName) {
+    query += ` AND last_name ILIKE $${index}`;
+    values.push(`%${filters.lastName}%`);
+    index++;
+  }
+
+  query += ` ORDER BY id`;
+
+  const result = await pool.query(query, values);
 
   return result.rows;
 };

@@ -11,7 +11,12 @@ const {
  */
 const getStudents = async (req, res) => {
   try {
-    const students = await getStudentsService();
+    const students = await getStudentsService({
+  id: req.query.id,
+  course: req.query.course,
+  firstName: req.query.firstName,
+  lastName: req.query.lastName,
+});
 
     res.status(200).json({
       status: "success",
