@@ -3,6 +3,9 @@ const express = require("express");
 const {
   getStudents,
   getStudentById,
+  createStudent,
+  updateStudent,
+  deleteStudent,
 } = require("../controllers/studentController");
 
 const router = express.Router();
@@ -18,5 +21,11 @@ router.get("/", getStudents);
  * Gauti konkretų studentą
  */
 router.get("/:id", getStudentById);
+
+router.post("/", createStudent);
+
+router.patch("/:id", updateStudent);
+
+router.delete("/:id", deleteStudent);
 
 module.exports = router;
