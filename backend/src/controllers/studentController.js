@@ -1,6 +1,7 @@
 const {
   getStudents: getStudentsService,
   getStudent,
+  getStudentDetails,
   createNewStudent,
   updateExistingStudent,
   removeStudent,
@@ -34,9 +35,18 @@ const getStudents = async (req, res) => {
 /**
  * GET /api/students/:id
  */
-const getStudentById = async (req, res) => {
+/**
+ * GET /api/students/:id
+ */
+const getStudentById = async (
+  req,
+  res
+) => {
   try {
-    const student = await getStudent(req.params.id);
+    const student =
+      await getStudentDetails(
+        req.params.id
+      );
 
     if (!student) {
       return res.status(404).json({

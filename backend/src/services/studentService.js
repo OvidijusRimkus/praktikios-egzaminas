@@ -1,6 +1,7 @@
 const {
   getAllStudents,
   getStudentById,
+  getStudentWithSubjects,
   createStudent,
   updateStudent,
   deleteStudent,
@@ -57,10 +58,18 @@ const removeStudent = async (id) => {
   return await deleteStudent(id);
 };
 
+/**
+ * Gauti studentą su dalykais
+ */
+const getStudentDetails = async (id) => {
+  return await getStudentWithSubjects(id);
+};
+
 module.exports = {
   getStudents,
   getStudent,
   createNewStudent,
   updateExistingStudent,
   removeStudent,
+  getStudentDetails,
 };

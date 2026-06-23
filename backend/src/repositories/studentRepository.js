@@ -124,10 +124,46 @@ const deleteStudent = async (id) => {
   return result.rows[0];
 };
 
+/**
+ * Gauti studentą kartu su jo dalykais
+ */
+const getStudentWithSubjects = async (
+  studentId
+) => {
+  const studentResult = await pool.query(
+    `
+    SELECT *
+    FROM students
+    WHERE id = $1
+    `,
+    [studentId]
+  );
+
+  if (!studentResult.rows[0]) {
+    return null;
+  }
+
+  const subjectsResult = await pool.query(
+    `
+    SELECT *
+    FROM subjects
+    WHERE student_id = $1
+    ORDER BY id
+    `,
+    [studentId]
+  );
+
+  return {
+    ...studentResult.rows[0],
+    subjects: subjectsResult.rows,
+  };
+};
+
 module.exports = {
   getAllStudents,
   getStudentById,
   createStudent,
   updateStudent,
   deleteStudent,
+   getStudentWithSubjects,
 };
