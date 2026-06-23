@@ -41,10 +41,12 @@ export const updateStudent = async (
   return response.data;
 };
 
-export const deleteStudent = async (id) => {
-  const response = await axios.delete(
-    `${API_URL}/students/${id}`
-  );
+export const deleteStudent =
+  async (id) => {
+    const response =
+      await axios.delete(
+        `${API_URL}/students/${id}`
+      );
 
-  return response.data;
-};
+    return response.data;
+  };

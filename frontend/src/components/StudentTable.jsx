@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 
 const StudentTable = ({
   students,
+  onDelete,
 }) => {
   return (
     <div className="overflow-x-auto rounded-xl bg-white shadow">
@@ -31,37 +32,58 @@ const StudentTable = ({
         </thead>
 
         <tbody>
-          {students.map((student) => (
-            <tr
-              key={student.id}
-              className="border-t hover:bg-slate-50"
-            >
-              <td className="px-4 py-3">
-                {student.id}
-              </td>
+          {students.map(
+            (student) => (
+              <tr
+                key={student.id}
+                className="border-t hover:bg-slate-50"
+              >
+                <td className="px-4 py-3">
+                  {student.id}
+                </td>
 
-              <td className="px-4 py-3">
-                {student.first_name}
-              </td>
+                <td className="px-4 py-3">
+                  {
+                    student.first_name
+                  }
+                </td>
 
-              <td className="px-4 py-3">
-                {student.last_name}
-              </td>
+                <td className="px-4 py-3">
+                  {
+                    student.last_name
+                  }
+                </td>
 
-              <td className="px-4 py-3">
-                {student.course}
-              </td>
+                <td className="px-4 py-3">
+                  {
+                    student.course
+                  }
+                </td>
 
-              <td className="px-4 py-3">
-  <Link
-    to={`/students/${student.id}`}
-    className="rounded-lg bg-green-600 px-3 py-1 text-white transition hover:bg-green-700"
-  >
-    Peržiūrėti
-  </Link>
-</td>
-            </tr>
-          ))}
+                <td className="px-4 py-3">
+                  <div className="flex gap-2">
+                    <Link
+                      to={`/students/${student.id}`}
+                      className="rounded-lg bg-green-600 px-3 py-1 text-white hover:bg-green-700"
+                    >
+                      Peržiūrėti
+                    </Link>
+
+                    <button
+                      onClick={() =>
+                        onDelete(
+                          student.id
+                        )
+                      }
+                      className="rounded-lg bg-red-600 px-3 py-1 text-white hover:bg-red-700"
+                    >
+                      Ištrinti
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            )
+          )}
         </tbody>
       </table>
 
