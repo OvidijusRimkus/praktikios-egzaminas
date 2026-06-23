@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { getStudentById } from "../services/studentService";
 
 import SubjectForm from "../components/SubjectForm";
 import SubjectList from "../components/SubjectList";
 import DeleteModal from "../components/DeleteModal";
+import EditSubjectModal from "../components/EditSubjectModal";
+
 
 import {
   createSubject,
   deleteSubject,
+  updateSubject,
 } from "../services/subjectService";
 
 const StudentDetailsPage = () => {
@@ -31,12 +35,22 @@ const StudentDetailsPage = () => {
     setSubjectToDelete,
   ] = useState(null);
 
+  const [
+    showEditModal,
+    setShowEditModal,
+  ] = useState(false);
+
+  const [
+    selectedSubject,
+    setSelectedSubject,
+  ] = useState(null);
+
   useEffect(() => {
     loadStudent();
   }, []);
 
   /**
-   * Užkrauna studentą su visais dalykais
+   * Užkrauna studentą
    */
   const loadStudent =
     async () => {
@@ -53,7 +67,7 @@ const StudentDetailsPage = () => {
     };
 
   /**
-   * Sukuria naują dalyką
+   * Sukuria dalyką
    */
   const handleCreateSubject =
     async (subjectData) => {
@@ -70,7 +84,7 @@ const StudentDetailsPage = () => {
     };
 
   /**
-   * Atidaro šalinimo modalą
+   * Atidaro delete modalą
    */
   const openDeleteModal = (
     subjectId
@@ -83,7 +97,7 @@ const StudentDetailsPage = () => {
   };
 
   /**
-   * Patvirtina dalyko šalinimą
+   * Patvirtina ištrynimą
    */
   const confirmDeleteSubject =
     async () => {
@@ -99,6 +113,44 @@ const StudentDetailsPage = () => {
         );
 
         setSubjectToDelete(
+          null
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+  /**
+   * Atidaro redagavimo modalą
+   */
+  const openEditModal = (
+    subject
+  ) => {
+    setSelectedSubject(
+      subject
+    );
+
+    setShowEditModal(true);
+  };
+
+  /**
+   * Atnaujina dalyką
+   */
+  const handleUpdateSubject =
+    async (formData) => {
+      try {
+        await updateSubject(
+          selectedSubject.id,
+          formData
+        );
+
+        await loadStudent();
+
+        setShowEditModal(
+          false
+        );
+
+        setSelectedSubject(
           null
         );
       } catch (error) {
@@ -130,6 +182,12 @@ const StudentDetailsPage = () => {
     <div className="min-h-screen bg-slate-100">
       <div className="mx-auto max-w-5xl p-6">
         <div className="mb-6 rounded-xl bg-white p-6 shadow">
+            <Link
+  to="/"
+  className="mb-4 inline-block rounded-lg bg-slate-700 px-4 py-2 text-white hover:bg-slate-800"
+>
+  ← Grįžti į studentų sąrašą
+</Link>
           <h1 className="mb-4 text-3xl font-bold text-slate-800">
             {student.first_name}{" "}
             {student.last_name}
@@ -166,6 +224,9 @@ const StudentDetailsPage = () => {
             onDelete={
               openDeleteModal
             }
+            onEdit={
+              openEditModal
+            }
           />
         </div>
 
@@ -184,6 +245,27 @@ const StudentDetailsPage = () => {
             );
 
             setSubjectToDelete(
+              null
+            );
+          }}
+        />
+
+        <EditSubjectModal
+          isOpen={
+            showEditModal
+          }
+          subject={
+            selectedSubject
+          }
+          onSave={
+            handleUpdateSubject
+          }
+          onCancel={() => {
+            setShowEditModal(
+              false
+            );
+
+            setSelectedSubject(
               null
             );
           }}

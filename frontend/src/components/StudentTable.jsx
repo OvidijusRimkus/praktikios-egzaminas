@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 const StudentTable = ({
   students,
   onDelete,
+  onEdit,
 }) => {
   return (
     <div className="overflow-x-auto rounded-xl bg-white shadow">
@@ -79,6 +80,15 @@ const StudentTable = ({
                     >
                       Ištrinti
                     </button>
+
+                    <button
+  onClick={() =>
+    onEdit(student)
+  }
+  className="rounded-lg bg-yellow-500 px-3 py-1 text-white hover:bg-yellow-600"
+>
+  Redaguoti
+</button>
                   </div>
                 </td>
               </tr>

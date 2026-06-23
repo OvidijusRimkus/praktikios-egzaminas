@@ -40,3 +40,4 @@ export const updateSubject =
 
     return response.data;
   };
+

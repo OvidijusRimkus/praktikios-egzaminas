@@ -1,6 +1,7 @@
 const SubjectList = ({
   subjects,
   onDelete,
+  onEdit,
 }) => {
   if (!subjects?.length) {
     return (
@@ -23,18 +24,33 @@ const SubjectList = ({
             </h3>
 
             <p className="text-sm text-slate-500">
-              Kreditai: {subject.credits}
+              Kreditai:
+              {" "}
+              {subject.credits}
             </p>
           </div>
 
-          <button
-            onClick={() =>
-              onDelete(subject.id)
-            }
-            className="rounded-lg bg-red-600 px-3 py-2 text-white hover:bg-red-700"
-          >
-            Ištrinti
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() =>
+                onEdit(subject)
+              }
+              className="rounded bg-yellow-500 px-3 py-2 text-white hover:bg-yellow-600"
+            >
+              Redaguoti
+            </button>
+
+            <button
+              onClick={() =>
+                onDelete(
+                  subject.id
+                )
+              }
+              className="rounded bg-red-600 px-3 py-2 text-white hover:bg-red-700"
+            >
+              Ištrinti
+            </button>
+          </div>
         </div>
       ))}
     </div>

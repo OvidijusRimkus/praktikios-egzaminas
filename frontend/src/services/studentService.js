@@ -50,3 +50,37 @@ export const deleteStudent =
 
     return response.data;
   };
+
+    export const getFilteredStudents =
+  async (filters) => {
+    const params =
+      new URLSearchParams();
+
+    if (filters.firstName) {
+      params.append(
+        "firstName",
+        filters.firstName
+      );
+    }
+
+    if (filters.lastName) {
+      params.append(
+        "lastName",
+        filters.lastName
+      );
+    }
+
+    if (filters.course) {
+      params.append(
+        "course",
+        filters.course
+      );
+    }
+
+    const response =
+      await axios.get(
+        `${API_URL}/students?${params}`
+      );
+
+    return response.data;
+  };
