@@ -10,16 +10,53 @@ const StudentForm = ({
       course: "",
     });
 
+  const [errors, setErrors] =
+    useState({});
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]:
         e.target.value,
     });
+
+    setErrors({
+      ...errors,
+      [e.target.name]: "",
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const newErrors = {};
+
+    if (
+      !formData.firstName.trim()
+    ) {
+      newErrors.firstName =
+        "Vardas yra privalomas";
+    }
+
+    if (
+      !formData.lastName.trim()
+    ) {
+      newErrors.lastName =
+        "Pavardė yra privaloma";
+    }
+
+    if (!formData.course) {
+      newErrors.course =
+        "Pasirinkite kursą";
+    }
+
+    if (
+      Object.keys(newErrors)
+        .length > 0
+    ) {
+      setErrors(newErrors);
+      return;
+    }
 
     onSubmit(formData);
 
@@ -28,6 +65,8 @@ const StudentForm = ({
       lastName: "",
       course: "",
     });
+
+    setErrors({});
   };
 
   return (
@@ -40,39 +79,90 @@ const StudentForm = ({
       </h2>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <input
-          type="text"
-          name="firstName"
-          placeholder="Vardas"
-          value={
-            formData.firstName
-          }
-          onChange={handleChange}
-          className="rounded-lg border p-3"
-          required
-        />
+        <div>
+          <input
+            type="text"
+            name="firstName"
+            placeholder="Vardas"
+            value={
+              formData.firstName
+            }
+            onChange={
+              handleChange
+            }
+            className="w-full rounded-lg border p-3"
+          />
 
-        <input
-          type="text"
-          name="lastName"
-          placeholder="Pavardė"
-          value={
-            formData.lastName
-          }
-          onChange={handleChange}
-          className="rounded-lg border p-3"
-          required
-        />
+          {errors.firstName && (
+            <p className="mt-1 text-sm text-red-600">
+              {
+                errors.firstName
+              }
+            </p>
+          )}
+        </div>
 
-        <input
-          type="number"
-          name="course"
-          placeholder="Kursas"
-          value={formData.course}
-          onChange={handleChange}
-          className="rounded-lg border p-3"
-          required
-        />
+        <div>
+          <input
+            type="text"
+            name="lastName"
+            placeholder="Pavardė"
+            value={
+              formData.lastName
+            }
+            onChange={
+              handleChange
+            }
+            className="w-full rounded-lg border p-3"
+          />
+
+          {errors.lastName && (
+            <p className="mt-1 text-sm text-red-600">
+              {
+                errors.lastName
+              }
+            </p>
+          )}
+        </div>
+
+        <div>
+          <select
+            name="course"
+            value={
+              formData.course
+            }
+            onChange={
+              handleChange
+            }
+            className="w-full rounded-lg border p-3"
+          >
+            <option value="">
+              Pasirinkite kursą
+            </option>
+
+            <option value="1">
+              1 kursas
+            </option>
+
+            <option value="2">
+              2 kursas
+            </option>
+
+            <option value="3">
+              3 kursas
+            </option>
+
+            <option value="4">
+              4 kursas
+            </option>
+          </select>
+
+          {errors.course && (
+            <p className="mt-1 text-sm text-red-600">
+              {errors.course}
+            </p>
+          )}
+        </div>
       </div>
 
       <button

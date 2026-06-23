@@ -72,9 +72,17 @@ const getStudentById = async (
  */
 const createStudent = async (req, res) => {
   try {
-    const { firstName, lastName, course } = req.body;
+    const {
+      firstName,
+      lastName,
+      course,
+    } = req.body;
 
-    if (!firstName || !lastName || !course) {
+    if (
+      !firstName ||
+      !lastName ||
+      !course
+    ) {
       return res.status(400).json({
         status: "error",
         message:
@@ -82,11 +90,28 @@ const createStudent = async (req, res) => {
       });
     }
 
-    const student = await createNewStudent({
-      firstName,
-      lastName,
-      course,
-    });
+    const courseNumber =
+      Number(course);
+
+    if (
+      ![1, 2, 3, 4].includes(
+        courseNumber
+      )
+    ) {
+      return res.status(400).json({
+        status: "error",
+        message:
+          "Kursas turi būti nuo 1 iki 4",
+      });
+    }
+
+    const student =
+      await createNewStudent({
+        firstName,
+        lastName,
+        course:
+          courseNumber,
+      });
 
     res.status(201).json({
       status: "success",
@@ -95,31 +120,68 @@ const createStudent = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       status: "error",
-      message: error.message,
+      message:
+        error.message,
     });
   }
 };
-
 /**
  * PATCH /api/students/:id
  */
-const updateStudent = async (req, res) => {
+const updateStudent = async (
+  req,
+  res
+) => {
   try {
-    const { firstName, lastName, course } = req.body;
+    const {
+      firstName,
+      lastName,
+      course,
+    } = req.body;
 
-    const student = await updateExistingStudent(
-      req.params.id,
-      {
-        firstName,
-        lastName,
-        course,
-      }
-    );
+    if (
+      !firstName ||
+      !lastName ||
+      !course
+    ) {
+      return res.status(400).json({
+        status: "error",
+        message:
+          "firstName, lastName ir course yra privalomi",
+      });
+    }
+
+    const courseNumber =
+      Number(course);
+
+    if (
+      ![1, 2, 3, 4].includes(
+        courseNumber
+      )
+    ) {
+      return res.status(400).json({
+        status: "error",
+        message:
+          "Kursas turi būti nuo 1 iki 4",
+      });
+    }
+
+    const student =
+      await updateExistingStudent(
+        req.params.id,
+        {
+          firstName,
+          lastName,
+          course:
+            courseNumber,
+        }
+      );
 
     if (!student) {
       return res.status(404).json({
         status: "error",
-        message: "Studentas nerastas",
+        message:
+          "Studentas nerastas",
       });
     }
 
@@ -130,7 +192,8 @@ const updateStudent = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       status: "error",
-      message: error.message,
+      message:
+        error.message,
     });
   }
 };

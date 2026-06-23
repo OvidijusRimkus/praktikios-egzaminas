@@ -56,14 +56,32 @@ const StudentFilter = ({
           className="rounded-lg border p-3"
         />
 
-        <input
-          type="number"
-          name="course"
-          placeholder="Kursas"
-          value={filters.course}
-          onChange={handleChange}
-          className="rounded-lg border p-3"
-        />
+        <select
+  name="course"
+  value={filters.course}
+  onChange={handleChange}
+  className="rounded-lg border p-3"
+>
+  <option value="">
+    Visi kursai
+  </option>
+
+  <option value="1">
+    1 kursas
+  </option>
+
+  <option value="2">
+    2 kursas
+  </option>
+
+  <option value="3">
+    3 kursas
+  </option>
+
+  <option value="4">
+    4 kursas
+  </option>
+</select>
       </div>
 
       <button
